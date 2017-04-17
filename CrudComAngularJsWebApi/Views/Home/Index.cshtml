@@ -1,0 +1,1002 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div ng-controller="crudCtrl">
+
+    <h3><b><i>Todos os candidatos cadastrados</i></b></h3>
+
+    <div class="divList">
+
+        <table class="table table-bordered">
+            <tr>
+                <td align="center"><b>Email</b></td>
+                <td align="center"><b>Name</b></td>
+                <td align="center"><b>Skype</b></td>
+                <td align="center"><b>Linkedin</b></td>
+                <td align="center"><b>City</b></td>
+                <td align="center"><b>State</b></td>
+                <td align="center"><b>Portifolio</b></td>
+                <td align="center"><b>Ações</b></td>
+
+            </tr>
+
+            <tr ng-repeat="jobseeker in jobseekers">
+
+
+                <td align="center">{{jobseeker.Email}}</td>
+                <td align="center">{{jobseeker.Name}}</td>
+                <td align="center">{{jobseeker.Skype}}</td>
+                <td align="center">{{jobseeker.Linkedin}}</td>
+                <td align="center">{{jobseeker.City  }}</td>
+                <td align="center">{{jobseeker.State}}</td>
+                <td align="center">{{jobseeker.Portifolio}}</td>
+
+                <td align="center">
+                    <span ng-click="getJobSeekerPerId(jobseeker)" class="btn btn-primary">Alterar</span>
+                    <span ng-click="deleteJobSeeker(jobseeker)" class="btn btn-danger">Excluir</span>
+                </td>
+
+
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <span ng-click="insertJobSeekerDiv()" class="btn btn-default">
+        New Job Seeker
+    </span>
+
+
+    <div ng-show="divJobSeeker">
+        <div class="container">
+            <h2> {{Action}} Banco de Talentos - Easy</h2>
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse1">Área de atuação</a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <table class="table">
+
+                                <tr>
+                                    <td><b>Id</b></td>
+                                    <td>
+                                        <input type="text" disabled="disabled" ng-model="jobseekerId" class="form-control" />
+                                    </td>
+                                    <td><b>E-mail:*</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Email" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nome:*</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Name" class="form-control" />
+                                    </td>
+                                    <td><b>Skype:*</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Skype" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Telefone:*</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Phone" class="form-control" />
+                                    </td>
+                                    <td><b>Linkedin:</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Linkedin" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Cidade:*</b></td>
+                                    <td>
+                                        <input type="text" ng-model="City" class="form-control" />
+                                    </td>
+                                    <td><b>Estado:*</b></td>
+                                    <td>
+                                        <input type="text" ng-model="State" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Portifolio:</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Portifolio" class="form-control" />
+                                    </td>
+                                    <td><b>Pretensão salarial por hora?*:</b></td>
+                                    <td>
+                                        <input type="text" ng-model="WorkingTimeValue" class="form-control" />
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+
+
+                                    <td><b>Disponibilidade para trabalhar hoje?*</b></td>
+                                    <td>
+
+
+                                        <div class="form-group">
+                                            <div class="container">
+                                                <div class="col-md-8">
+                                                    <ul class="list-inline">
+                                                        <li ng-repeat="item in TipoHora">
+
+                                                            <input type="checkbox" name="ScheduleAvailable" ng-click="GetSchedule(item.Tipo)"><label class="control-label">{{item.Tipo}}</label>
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td><b>Horário para trabalhar?*</b></td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="container">
+                                                <div class="col-md-8">
+                                                    <ul class="list-inline">
+                                                        <li ng-repeat="item in TipoHorario">
+
+                                                            <input type="checkbox" name="HoursAvailable" ng-click="GetHours(item.Tipo)"><label class="control-label">{{item.Tipo}}</label>
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse2">Informação bancária</a>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <table class="table">
+
+                                <tr>
+                                    <td><b>Name:</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Name" class="form-control" />
+                                    </td>
+                                    <td><b>CPF:</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Cpf" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Banco:(Nome)</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Bank" class="form-control" />
+                                    </td>
+                                    <td><b>Agência:</b></td>
+                                    <td>
+                                        <input type="text" ng-model="Agency" class="form-control" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td><b>Tipo de conta:</b></td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="container">
+                                                <div class="col-md-6">
+                                                    <ul class="list-unstyled">
+                                                        <li ng-repeat="item in TipoConta">
+
+                                                            <input type="checkbox" name="BuscaConta" ng-click="GetAccountType(item.Tipo)"><label class="control-label">{{item.Tipo}}</label>
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td><b>Número da conta:</b></td>
+                                    <td>
+                                        <input type="text" ng-model="AccountNumber" class="form-control" />
+                                    </td>
+
+                                </tr>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse3">Conhecimentos</a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <div class="form-inline">
+                                <label class="control-label required">Ionic<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="ionic" ng-click="GetKnowledge('ionic',item)" ng-value="item" ng-model="NivelIonic" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Android<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="android" ng-click="GetKnowledge('android',item)" ng-value="item" ng-model="NivelAndroid" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">IOS<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="ios" ng-click="GetKnowledge('ios',item)" ng-value="item" ng-model="NivelIos" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label">HTML</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="html" ng-click="GetKnowledge('html',item)" ng-value="item" ng-model="NivelHtml" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label">CSS</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="css" ng-click="GetKnowledge('css',item)" ng-value="item" ng-model="NivelCss" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Bootstrap<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="bootstrap" ng-click="GetKnowledge('bootstrap',item)" ng-value="item" ng-model="NivelBootstrap" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Jquery<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="jquery" ng-click="GetKnowledge('jquery',item)" ng-value="item" ng-model="NivelJquery" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">AngularJs<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="angularjs" ng-click="GetKnowledge('angularjs',item)" ng-value="item" ng-model="NivelAngularJs" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Java</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="java" ng-click="GetKnowledge('java',item)" ng-value="item" ng-model="NivelJava" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Asp.Net MVC<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="asp" ng-click="GetKnowledge('asp',item)" ng-value="item" ng-model="NivelAspNetMvc" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">C</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="code_c" ng-click="GetKnowledge('code_c',item)" ng-value="item" ng-model="NivelC" />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">C++</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="cplus" ng-click="GetKnowledge('cplus',item)" ng-value="item" ng-model="NivelCPlus" />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Cake</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="cake" ng-click="GetKnowledge('cake',item)" ng-value="item" ng-model="NivelCake" />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Django</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="django" ng-click="GetKnowledge('django',item)" ng-value="item" ng-model="NivelDjango" />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Majento</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="majento" ng-click="GetKnowledge('majento',item)" ng-value="item" ng-model="NivelMajento" />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">PHP<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="php" ng-click="GetKnowledge('php',item)" ng-value="item" ng-model="NivelPhp" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Wordpress<abbr title="required">*</abbr></label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="wordpress" ng-click="GetKnowledge('wordpress',item)" ng-value="item" ng-model="NivelWordpress" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Phyton</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="phyton" ng-click="GetKnowledge('python',item)" ng-value="item" ng-model="NivelPhyton" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Ruby</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="ruby" ng-click="GetKnowledge('ruby',item)" ng-value="item" ng-model="NivelRuby" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">SQL Server</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="sqlserver" ng-click="GetKnowledge('sqlserver',item)" ng-value="item" ng-model="NivelSqlServer" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">My SQL</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="mysql" ng-click="GetKnowledge('mysql',item)" ng-value="item" ng-model="NivelMySql" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Salesforce</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="salesforce" ng-click="GetKnowledge('salesforce',item)" ng-value="item" ng-model="NivelSalesforce" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Photoshop</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="photoshop" ng-click="GetKnowledge('photoshop',item)" ng-value="item" ng-model="NivelPhotoshop" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">Illustrator</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="illustrator" ng-click="GetKnowledge('illustrator',item)" ng-value="item" ng-model="NivelIlustrator" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="form-inline">
+                                <label class="control-label required">SEO</label>
+                                <div class="container">
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Nao conheco / I don't know
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <ul class="list-inline">
+                                            <li ng-repeat="item in opcoes">
+                                                <div class="col-md-1">
+                                                    <label class="radio">{{item}}</label>
+                                                    <input type="radio" name="seo" ng-click="GetKnowledge('seo',item)" ng-value="item" ng-model="NivelSeo" required />
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="panel">
+                                            Senior
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div>
+                                <label class="control-label">Conhece mais alguma linguagem ou framework que não foi listado aqui em cima?<br> Conte para nos e se auto avalie ainda de 0 a 5.</label>
+                                <div class="container">
+                                    <form>
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="5" id="comment" ng-model="ConhecimentoLinguagens"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div>
+                <input type="button" class="btn btn-default" value="Salvar" ng-click="insertUpdateJobSeeker()" />
+                <input type="button" class="btn btn-danger" value="Cancelar" ng-click="Cancelar()" />
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
